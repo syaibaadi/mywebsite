@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+    stages {
+        stage('Cloning Git'){
+            steps{
+                git credentialsId: '0f626be2-a681-438b-8147-1532736dc906', url: 'https://github.com/syaibaadi/mywebsite.git'
+            }
+        }
+        stage('Build and check Docker Image'){
+            steps{
+                sh 'sudo docker build -t mywebsite:latest .'
+                sh 'sudo docker images'
+            }
+        }
+        stage('Run and check Container '){
+            steps{
+                sh 'sudo docker run -d -p 85:80 --name myweb mywebsite:latest'
+                sh 'sudo docker ps'
+            }
+        }
+    }
+}
